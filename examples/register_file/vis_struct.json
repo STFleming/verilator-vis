@@ -1,0 +1,45 @@
+{
+	"struct_name": "draig_i32",
+	"signals": [
+	    { "struct_name" : "sr0",
+	       "signals": [
+	            {
+	            	"name": "sr0_addr",
+	            	"width": 5 
+	            },
+	            {
+	            	"name": "sr0_data",
+	            	"width": 32 
+	            }
+           ]
+        },
+        { "struct_name" : "sr1",
+            "signals" : [
+                {
+                    "name": "sr1_addr",
+                    "width" : 5 
+                },
+                {
+                    "name" : "sr1_data",
+                    "width" : 32 
+                }
+            ]
+        },
+        { "struct_name" : "wr_reg",
+            "signals" : [
+                {
+                    "name" : "wr_addr",
+                    "width" : 5 
+                },
+                {
+                    "name" : "wr_data",
+                    "width" : 32
+                },
+                {
+                    "name" : "wr_valid",
+                    "width" : 1
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+	"struct_name": "processor_top",
+	"signals": [{
+			"name": "inst_wr",
+			"width": 42
+		},
+		{
+			"name": "inst_wr_bits",
+			"width": 10
+		},
+		{
+			"struct_name": "register_file",
+			"signals": [{
+				"name" : "reg1_state",
+				"width": 10
+			}]
+		}
+	]
+}

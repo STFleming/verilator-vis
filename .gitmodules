@@ -1,0 +1,6 @@
+[submodule "verilator"]
+	path = verilator
+	url = git@github.com:verilator/verilator.git
+[submodule "webserver/clientside_modules/terminaljs"]
+	path = webserver/clientside_modules/terminaljs
+	url = git@github.com:eosterberg/terminaljs.git
