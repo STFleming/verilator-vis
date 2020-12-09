@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <cpprest/ws_client.h>
 #include <string>
-#include "instruction.hpp"
 
 class Visualiser {
 	public:
@@ -39,11 +38,6 @@ class Visualiser {
 		     if(blocking) {
                           sendtask.wait();
 		     }
-		}
-
-		// Sends an RISC-V instruction to the visualisation server
-		void send(Instruction i){
-			send(i.toJSON());
 		}
 
         // Get a reference to the websocket client -- this might not be the safest thing to do

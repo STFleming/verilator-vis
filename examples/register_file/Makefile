@@ -13,20 +13,14 @@
 # Check for sanity to avoid later confusion
 
 LEVEL=../..
-COMMON=$(LEVEL)/common
-SCOMMON=$(LEVEL)/cores/sw
+COMMON=$(LEVEL)/common/hw
+SCOMMON=$(LEVEL)/common/sw
 VISSTRUCT=$(SCOMMON)/vis_struct_gen/bin/vis_struct_gen
-DCOMMON=$(LEVEL)/cores/hw
-DRAIG_TYPES=$(DCOMMON)/DraigTypes
-PROGRAM_COUNTER=$(DCOMMON)/ProgramCounter
-REGISTER_FILE=$(DCOMMON)/RegisterFile
-INSTRUCTION_DECODER=$(DCOMMON)/InstructionDecoder
-ALU=$(DCOMMON)/ArithmeticLogicUnit
+REGISTER_FILE=RegisterFile.sv
 BRAM=$(COMMON)/Bram
 LIBRAM=$(COMMON)/LIBram
 SKIDBUFFER=$(COMMON)/SkidBuffer
-
-VISUALISER=$(LEVEL)/visualiser/vis_server
+VISUALISER=$(LEVEL)/webserver
 
 TOPMODULE=register_file_tb
 
@@ -51,11 +45,7 @@ endif
 
 VERILATOR_INCLUDES = -y $(BRAM)/ 
 VERILATOR_INCLUDES += -y $(LIBRAM)/
-VERILATOR_INCLUDES += -y $(SKIDBUFFER)/
-VERILATOR_INCLUDES += -y $(PROGRAM_COUNTER)/
-VERILATOR_INCLUDES += -y $(REGISTER_FILE)/
-VERILATOR_INCLUDES += -y $(INSTRUCTION_DECODER)/
-VERILATOR_INCLUDES += -y $(ALU)/
+VERILATOR_INCLUDES += -y $(SKIDBUFFER)
 
 VERILATOR_FLAGS =
 # Generate C++ in executable form
@@ -85,7 +75,7 @@ VERILATOR_FLAGS += --coverage
 # Add this trace to get a backtrace in gdb
 #VERILATOR_FLAGS += --gdbbt
 
-FILES = $(DRAIG_TYPES)/DraigTypes.sv Draigi32Vis.sv register_file_tb.sv  
+FILES = Draigi32Vis.sv register_file_tb.sv RegisterFile.sv 
 
 # Input files for Verilator
 VERILATOR_INPUT = -f input.vc $(FILES) sim_main.cpp
@@ -133,11 +123,11 @@ run: vis_structs
 
 # ~~~~~~~~~ The web frontend ~~~~~~~~~~~~~~~~~~~~~~~~
 
-node_modules:
-	npm install ws
-	npm install express
+$(VISUALISER)/node_modules:
+	(cd $(VISUALISER) && npm install ws)
+	(cd $(VISUALISER) && npm install express)
 
-visualiser: node_modules $(VISUALISER)/server.js index.html
+visualiser: $(VISUALISER)/node_modules $(VISUALISER)/server.js index.html
 	node $(VISUALISER)/server.js $(realpath $(VISUALISER)) index.html
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,4 +146,5 @@ show-config:
 maintainer-copy::
 clean mostlyclean distclean maintainer-clean::
 	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core *.vcd Draigi32Vis.sv draigVisParser.sv draigVisParser.hpp 
+	-rm -rf node_modules package-lock.json 
 	

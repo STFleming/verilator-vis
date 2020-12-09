@@ -14,7 +14,6 @@
 #include <queue>
 #include <cstdint>
 
-#include "instruction.hpp"
 #include "visualiser.hpp"
 #include "controller.hpp"
 

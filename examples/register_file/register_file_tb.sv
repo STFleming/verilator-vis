@@ -3,7 +3,6 @@
 //
 // author: stf
 
-import DraigTypes::*;
 import Draigi32Vis::*;
 
 module register_file_tb(
