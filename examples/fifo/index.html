@@ -107,8 +107,6 @@
                .attr("x2", 2000)
                .attr("y2", 45);
 
-            let reg_file = new regFile(svg, colour, 50, 150, "regarray", 32);
-
 		    socket.onmessage = function(event) {
 		    	var msg = JSON.parse(event.data);
 
@@ -124,10 +122,7 @@
                     }
 
                 } else {
-                    // Update the regfile signals
-                    //reg_file.assertWr(msg.regfile_vis.wr_reg.wr_valid, msg.regfile_vis.wr_reg.wr_addr);
-                    //reg_file.assertSR0(1, msg.regfile_vis.sr0.sr0_addr);
-                    //reg_file.assertSR1(1, msg.regfile_vis.sr1.sr1_addr);
+                    // Update the fifo signals
                     console.log(msg);
                         
                 }
