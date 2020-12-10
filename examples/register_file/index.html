@@ -48,7 +48,7 @@
     
             function contCmd(){    
                 t1.clear();    
-                t1.input("Driag Processor Visualisation Terminal:");
+                t1.input("RegisterFile Visualisation Terminal:");
                 t1.input("", function(input) {    
 
                     if(cmdParse.parse(input)){
@@ -125,9 +125,9 @@
 
                 } else {
                     // Update the regfile signals
-                    reg_file.assertWr(msg.draig_i32.wr_reg.wr_valid, msg.draig_i32.wr_reg.wr_addr);
-                    reg_file.assertSR0(1, msg.draig_i32.sr0.sr0_addr);
-                    reg_file.assertSR1(1, msg.draig_i32.sr1.sr1_addr);
+                    reg_file.assertWr(msg.regfile_vis.wr_reg.wr_valid, msg.regfile_vis.wr_reg.wr_addr);
+                    reg_file.assertSR0(1, msg.regfile_vis.sr0.sr0_addr);
+                    reg_file.assertSR1(1, msg.regfile_vis.sr1.sr1_addr);
                         
                 }
 

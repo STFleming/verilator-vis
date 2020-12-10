@@ -75,7 +75,7 @@ VERILATOR_FLAGS += --coverage
 # Add this trace to get a backtrace in gdb
 #VERILATOR_FLAGS += --gdbbt
 
-FILES = Draigi32Vis.sv register_file_tb.sv RegisterFile.sv 
+FILES = _vis.sv register_file_tb.sv RegisterFile.sv 
 
 # Input files for Verilator
 VERILATOR_INPUT = -f input.vc $(FILES) sim_main.cpp
@@ -84,7 +84,7 @@ VERILATOR_INPUT = -f input.vc $(FILES) sim_main.cpp
 default: run
 
 vis_structs: vis_struct.json
-	$(VISSTRUCT) -i vis_struct.json -v Draigi32Vis.sv -c draigVisParser.hpp
+	$(VISSTRUCT) -i vis_struct.json -v _vis.sv -c _vis.hpp
 
 run: vis_structs 
 	@echo
@@ -145,6 +145,6 @@ show-config:
 
 maintainer-copy::
 clean mostlyclean distclean maintainer-clean::
-	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core *.vcd Draigi32Vis.sv draigVisParser.sv draigVisParser.hpp 
+	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core *.vcd _vis.sv _vis.hpp 
 	-rm -rf node_modules package-lock.json 
 	

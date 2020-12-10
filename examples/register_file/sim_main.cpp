@@ -17,7 +17,7 @@
 #include "visualiser.hpp"
 #include "controller.hpp"
 
-#include "draigVisParser.hpp" // auto-generated, takes the raw bits from the port and re-renders it as a JSON object for the web-fe
+#include "_vis.hpp" // auto-generated, takes the raw bits from the port and re-renders it as a JSON object for the web-fe
 
 #include <sstream>
 

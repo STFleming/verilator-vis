@@ -3,7 +3,7 @@
 //
 // author: stf
 
-import Draigi32Vis::*;
+import verilatorVis::*;
 
 module register_file_tb(
     input clk,
@@ -15,7 +15,7 @@ module register_file_tb(
     output logic       wr_data_ready_out,
 
     // Visualisation state output
-    output draig_i32_dvis_t vis_out
+    output regfile_vis_dvis_t vis_out
 
 );
 
@@ -57,7 +57,7 @@ module register_file_tb(
    );
 
    always_comb begin
-        vis_out = {$bits(draig_i32_dvis_t){1'b0}};
+        vis_out = {$bits(regfile_vis_dvis_t){1'b0}};
         vis_out.wr_reg.wr_addr  = wr_addr_in;
         vis_out.wr_reg.wr_data  = wr_data_in;
         vis_out.wr_reg.wr_valid = wr_data_valid_in && wr_data_ready_out;

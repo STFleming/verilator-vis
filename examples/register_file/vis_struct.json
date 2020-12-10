@@ -1,5 +1,5 @@
 {
-	"struct_name": "draig_i32",
+	"struct_name": "regfile_vis",
 	"signals": [
 	    { "struct_name" : "sr0",
 	       "signals": [
