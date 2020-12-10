@@ -4,3 +4,6 @@
 [submodule "webserver/clientside_modules/terminaljs"]
 	path = webserver/clientside_modules/terminaljs
 	url = git@github.com:eosterberg/terminaljs.git
+[submodule "common/hw/fifo"]
+	path = common/hw/fifo
+	url = git@github.com:olofk/fifo.git
