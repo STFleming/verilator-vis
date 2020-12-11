@@ -31,6 +31,7 @@ console.log("Visualisation library: "+vis_libdir);
 app.get('/hdlvis/position.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/position.js')));
 app.get('/hdlvis/wire.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/wire.js')));
 app.get('/hdlvis/wireGroup.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/wireGroup.js')));
+app.get('/hdlvis/fifo_fwft.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/fifo_fwft.js')));
 app.get('/hdlvis/ram.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/ram.js')));
 app.get('/hdlvis/reg.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/reg.js')));
 app.get('/hdlvis/regN.js', (req, res) => res.sendFile(path.join(vis_libdir+'/hdlvis/regN.js')));
