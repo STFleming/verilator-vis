@@ -5,12 +5,12 @@ This is primarily used for teaching custom digital design to undergraduate stude
 
 ![example](media/fifo.gif)
 
-In the above example we can see how a simple FIFO. 
+In the above example we can see a simple FWFT FIFO being visualised. 
 1. We start the webserver rendering the diagram
 2. The we start the Verilator simulation of the FIFO module
 3. We can then issue commands from the webinterface, in this case `play 12` which means play the simulation for 12 clock cycles.
 4. During the simulation data is written to and read from the FIFO and we can see this represented in the diagram.
-5. We input the `end` command into the web interfaces terminal. This stops the verilator simulation
+5. We input the `end` command into the web interfaces terminal. This stops the Verilator simulation
 6. It is then possible to inspect the simulation at a deeper level looking at the wave forms with gtkwave.
 
 ---------------------------------------------------------------
@@ -19,7 +19,7 @@ In the above example we can see how a simple FIFO.
 
 Every cycle Verilator sends user-specified data to the web frontend using websockets. The various javascript APIs then use this data to update the state of the diagram shown on the screen.
 
-The data structure for what data is sent over websockets is defined in a json file. For instance, for the FIFO example, the json file looks like the following:
+The data structure for what data is sent over websockets is defined in a json file. For the FIFO example, the json file looks like the following:
 
 ```
 {
@@ -57,7 +57,7 @@ This describes a hierarchical structure with signal names and their widths.
 In the hardware we can then make assignments to this structure.
 The tool will generate two versions, a SystemVerilog struct that can be included in the hardware, an a C++ header file that parses the data coming out of the simulation in the Verilator C++ top-level file and transmits it via websockets as another json object.
 
-In the FIFO example we can include the generated SystemVerilog struct.
+For the FIFO example we can include the generated SystemVerilog struct in our hardware.
 ```
 import verilatorVis::*;
 ```
@@ -76,7 +76,7 @@ And then make assignments to it within our design.
 ```
 
 The Verilator simulation will then parse this data and send it over json to our connected web frontend. 
-For our FIFO example the JSON struct at the web frontend looks like the following:
+For our FIFO example, the JSON struct at the web frontend looks like the following:
 
 ```
 {
