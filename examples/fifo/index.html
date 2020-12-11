@@ -7,6 +7,7 @@
          <script src="hdlvis/position.js"></script>
          <script src="hdlvis/wire.js"></script>
          <script src="hdlvis/wireGroup.js"></script>
+         <script src="hdlvis/fifo_fwft.js"></script>
          <script src="hdlvis/ram.js"></script>
          <script src="hdlvis/reg.js"></script>
          <script src="hdlvis/regN.js"></script>
@@ -107,6 +108,10 @@
                .attr("x2", 2000)
                .attr("y2", 45);
 
+        
+            let fifo = new fifo_fwft(svg ,colour, 100, 150, "fifoinst"); 
+            
+
 		    socket.onmessage = function(event) {
 		    	var msg = JSON.parse(event.data);
 
@@ -123,7 +128,8 @@
 
                 } else {
                     // Update the fifo signals
-                    console.log(msg);
+                    fifo.read(msg.fifo_vis.read.rd_valid);
+                    fifo.write(msg.fifo_vis.write.wr_valid, msg.fifo_vis.write.wr_data);
                         
                 }
 
