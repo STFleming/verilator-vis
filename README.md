@@ -94,6 +94,9 @@ For our FIFO example, the JSON struct at the web frontend looks like the followi
 ```
 This can then be parsed and the JavaScript libraries provided can be used to render it on the webpage.
 
+## Setting up
+1. Clone this repositiory with 
+
 ## Running the example
 To run the simple FIFO example type the following:
 
