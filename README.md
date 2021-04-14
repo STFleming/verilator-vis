@@ -95,7 +95,20 @@ For our FIFO example, the JSON struct at the web frontend looks like the followi
 This can then be parsed and the JavaScript libraries provided can be used to render it on the webpage.
 
 ## Setting up
-1. Clone this repositiory with 
+1. Clone this repository with the recursive flag to pull all sub-repositories
+
+   `git clone --recursive https://github.com/STFleming/verilator-vis`
+
+   or if you have SSH setup with GitHub
+
+   `git clone --recurive git@github.com:STFleming/verilator-vis.git`
+
+2. Step into the folder and run the install script to install all the needed programs
+
+   ```
+cd /verilator-vis
+./install.sh
+   ```
 
 ## Running the example
 To run the simple FIFO example type the following:
@@ -103,7 +116,10 @@ To run the simple FIFO example type the following:
 ```
 cd examples/fifo
 make visualiser
-
+```
+When that says `Server is running: http://localhost:4000` open another terminal and in the same folder run
+```
 make run
 ```
+ You can then head to [http://localhost:4000](http://localhost:4000) to view the program running.
 
