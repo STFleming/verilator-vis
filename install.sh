@@ -41,6 +41,8 @@ else
 	
 	sudo apt-get install verilator
 
+	sudo apt-get install gtkwave
+
 	#cd verilator/
 	#autoconf
 	#unset VERILATOR_ROOT
