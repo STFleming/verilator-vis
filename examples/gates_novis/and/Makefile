@@ -66,6 +66,15 @@ VERILATOR_FLAGS += -LDFLAGS -lcpprest
 VERILATOR_FLAGS += -LDFLAGS -lboost_program_options
 VERILATOR_FLAGS += -LDFLAGS -lpthread
 
+PLAT := $(shell uname -m)
+ifeq ($(PLAT), arm64)
+	VERILATOR_FLAGS  += -LDFLAGS -L$(shell brew --prefix boost)/lib
+	VERILATOR_FLAGS  += -LDFLAGS -L$(shell brew --prefix rapidjson)/lib
+	VERILATOR_FLAGS  += -LDFLAGS -L$(shell brew --prefix binutils)/lib
+	VERILATOR_FLAGS  += -LDFLAGS -L$(shell brew --prefix openssl)/lib
+	VERILATOR_FLAGS  += -LDFLAGS -L$(shell brew --prefix cpprestsdk)/lib
+endif
+
 # Make waveforms
 VERILATOR_FLAGS += --trace
 # Check SystemVerilog assertions

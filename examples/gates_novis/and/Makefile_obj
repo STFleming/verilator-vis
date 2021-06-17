@@ -17,12 +17,22 @@ INSTRUCTION_CLASS=$(SCOMMON)/instruction
 VISUALISER_CLASS=$(SCOMMON)/visualiser
 CONTROLLER_CLASS=$(SCOMMON)/controller
 
+PACKAGE_INCLUDES= 
+PLAT := $(shell uname -m)
+ifeq ($(PLAT), arm64)
+        PACKAGE_INCLUDES  += -I $(shell brew --prefix boost)/include
+        PACKAGE_INCLUDES  += -I $(shell brew --prefix rapidjson)/include
+        PACKAGE_INCLUDES  += -I $(shell brew --prefix binutils)/include
+        PACKAGE_INCLUDES  += -I $(shell brew --prefix openssl)/include
+        PACKAGE_INCLUDES  += -I $(shell brew --prefix cpprestsdk)/include
+endif
+
 default: Vand_tb
 
 # Include the rules made by Verilator
 include Vand_tb.mk
 
-DRAIG_INCLUDES= -I$(INSTRUCTION_CLASS)/ -I$(VISUALISER_CLASS) -I$(CONTROLLER_CLASS)
+DRAIG_INCLUDES= -I$(INSTRUCTION_CLASS)/ -I$(VISUALISER_CLASS) -I$(CONTROLLER_CLASS) $(PACKAGE_INCLUDES)
 
 CPPFLAGS += $(DRAIG_INCLUDES)
 
