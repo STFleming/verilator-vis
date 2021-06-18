@@ -1,5 +1,7 @@
 // intermediate_signals  (Readler -- VBE -- page 8)  
 //
+// Implements a 2 input MUX from first principles.
+//
 // author: stf
 
 module intermediate_signal (

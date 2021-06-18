@@ -12,7 +12,7 @@
 ######################################################################
 # Check for sanity to avoid later confusion
 
-LEVEL=../../..
+LEVEL=../../../..
 COMMON=$(LEVEL)/common/hw
 SCOMMON=$(LEVEL)/common/sw
 VISSTRUCT=$(SCOMMON)/vis_struct_gen/bin/vis_struct_gen
