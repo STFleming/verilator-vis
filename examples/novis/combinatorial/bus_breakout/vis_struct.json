@@ -1,0 +1,29 @@
+{
+	"struct_name": "fifo_vis",
+	"signals": [
+	    { "struct_name" : "write",
+	       "signals": [
+	            {
+	            	"name": "wr_data",
+	            	"width": 32 
+	            },
+	            {
+	            	"name": "wr_valid",
+	            	"width": 1 
+	            }
+           ]
+        },
+        { "struct_name" : "read",
+            "signals" : [
+                {
+                    "name": "rd_data",
+                    "width" : 32 
+                },
+                {
+                    "name" : "rd_valid",
+                    "width" : 1 
+                }
+            ]
+        }
+    ]
+}
