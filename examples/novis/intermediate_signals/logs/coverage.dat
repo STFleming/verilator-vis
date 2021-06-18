@@ -1,0 +1,24 @@
+# SystemC::Coverage-3
+C 'ftop_tb.svl12n15pagev_toggle/intermediate_signaloout_1hTOP.top_tb.intermediate_signal_inst' 8
+C 'ftop_tb.svl13n15pagev_toggle/intermediate_signaloout_2hTOP.top_tb.intermediate_signal_inst' 10
+C 'ftop_tb.svl17n7pagev_toggle/intermediate_signalointernal_sighTOP.top_tb.intermediate_signal_inst' 19
+C 'ftop_tb.svl27n11pagev_toggle/top_tboclkhTOP.top_tb' 81
+C 'ftop_tb.svl28n11pagev_toggle/top_tborsthTOP.top_tb' 2
+C 'ftop_tb.svl34n10pagev_toggle/top_tbotb_in1hTOP.top_tb' 36
+C 'ftop_tb.svl35n10pagev_toggle/top_tbotb_in2hTOP.top_tb' 18
+C 'ftop_tb.svl36n10pagev_toggle/top_tbotb_in3hTOP.top_tb' 11
+C 'ftop_tb.svl38n10pagev_toggle/top_tbotb_out1hTOP.top_tb' 8
+C 'ftop_tb.svl39n10pagev_toggle/top_tbotb_out2hTOP.top_tb' 10
+C 'ftop_tb.svl44n16pagev_toggle/top_tbocnt[0]hTOP.top_tb' 36
+C 'ftop_tb.svl44n16pagev_toggle/top_tbocnt[1]hTOP.top_tb' 18
+C 'ftop_tb.svl44n16pagev_toggle/top_tbocnt[2]hTOP.top_tb' 10
+C 'ftop_tb.svl45n4pagev_line/top_tboblockS45-46hTOP.top_tb' 40
+C 'ftop_tb.svl47n2pagev_branch/top_tboifS47-48hTOP.top_tb' 4
+C 'ftop_tb.svl47n3pagev_branch/top_tboelsehTOP.top_tb' 36
+C 'ftop_tb.svl67n4pagev_line/top_tboblockS67-68hTOP.top_tb' 40
+C 'ftop_tb.svl7n14pagev_toggle/intermediate_signaloin_1hTOP.top_tb.intermediate_signal_inst' 36
+C 'ftop_tb.svl73n4pagev_line/top_tboblockS73,79hTOP.top_tb' 1
+C 'ftop_tb.svl74n7pagev_branch/top_tboifS74-77hTOP.top_tb' 1
+C 'ftop_tb.svl74n8pagev_branch/top_tboelsehTOP.top_tb' 0
+C 'ftop_tb.svl8n14pagev_toggle/intermediate_signaloin_2hTOP.top_tb.intermediate_signal_inst' 18
+C 'ftop_tb.svl9n14pagev_toggle/intermediate_signaloin_3hTOP.top_tb.intermediate_signal_inst' 11
