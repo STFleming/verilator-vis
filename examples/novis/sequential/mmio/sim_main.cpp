@@ -16,6 +16,7 @@
 
 #include <sstream>
 #include <queue>
+#include <thread>
 
 // Current simulation time (64-bit unsigned)
 vluint64_t main_time = 0;
@@ -41,10 +42,33 @@ void regWrite(uint32_t addr, uint32_t data) {
 	t.data = data;
 	t.wr = 1;
 	t.rd = 0;
+	while(mmio_cmd_q.size() >= 10) {} // Make sure we don't over produce
 	mmio_cmd_q.push(t);	
 }
 
+//-----------------------------------------
+//   User code
+//-----------------------------------------
+uint32_t val;
 
+// runs once on startup
+void setup() {
+	val = 42;
+}
+
+// runs continuously
+void loop() {
+	regWrite(0x00010008, val++);
+}
+
+//-----------------------------------------
+
+void loop_wrapper() {
+    setup();
+    while(true) {
+	    loop();
+    }	
+}
 
 int main(int argc, char** argv, char** env) {
 
@@ -76,7 +100,7 @@ int main(int argc, char** argv, char** env) {
     top->rst = 0;
     top->clk = 0;
 
-    regWrite(0x0001008, 56); 
+    std::thread loop_thread(loop_wrapper);
 
     // Simulate until $finish
     while (!Verilated::gotFinish()) {
