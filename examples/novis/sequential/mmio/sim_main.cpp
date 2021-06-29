@@ -18,13 +18,14 @@
 #include <queue>
 #include <thread>
 
+#include "sw_driver.h"
+
 // Current simulation time (64-bit unsigned)
 vluint64_t main_time = 0;
 // Called by $time in Verilog
 double sc_time_stamp() {
     return main_time;  // Note does conversion to real, to match SystemC
 }
-
 
 typedef struct {
 	uint32_t addr;
@@ -45,23 +46,6 @@ void regWrite(uint32_t addr, uint32_t data) {
 	while(mmio_cmd_q.size() >= 10) {} // Make sure we don't over produce
 	mmio_cmd_q.push(t);	
 }
-
-//-----------------------------------------
-//   User code
-//-----------------------------------------
-uint32_t val;
-
-// runs once on startup
-void setup() {
-	val = 42;
-}
-
-// runs continuously
-void loop() {
-	regWrite(0x00010008, val++);
-}
-
-//-----------------------------------------
 
 void loop_wrapper() {
     setup();
@@ -99,17 +83,17 @@ int main(int argc, char** argv, char** env) {
     // Set some inputs
     top->rst = 0;
     top->clk = 0;
+    top->addr_in = 0;
+    top->data_in = 0;
+    top->wr_in = 0;
+    top->rd_in = 0;
 
     std::thread loop_thread(loop_wrapper);
+
 
     // Simulate until $finish
     while (!Verilated::gotFinish()) {
         main_time++;  // Time passes...
-
-	top->addr_in = 0x00010004;
-	top->data_in = 42;
-	top->wr_in = 0;
-	top->rd_in = 0;
 
         // Toggle a fast (time/2 period) clock
         top->clk = !top->clk;
