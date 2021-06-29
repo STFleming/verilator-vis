@@ -1,6 +1,6 @@
 // MMIO  
 // 
-// a memory-mapped IO module
+// A 4-byte addressable memory-mapped IO module
 // used to help demystify HW/SW communications a bit
 //
 // author: stf
@@ -17,6 +17,7 @@ module mmio (
 	input logic          wr_in,   // the write signal 
 
 	input logic          rd_in,   // the read signal
+	output logic 	     rd_valid_out, // when this is high there is a valid read signal at the output
 	output logic [31:0]  data_out // the output data
 );
 // -------------------------------
@@ -28,10 +29,10 @@ logic [31:0] status_reg;
 
 // Write process
 always_ff @(posedge clk) begin
-	if ((addr_in[15] == 1'b1) && wr_in) begin
-		case(addr_in[3:0])
-			4'h0 : config_reg <= data_in; 			
-			4'h4 : input_data_reg <= data_in;  
+	if ((addr_in[31:16] == 16'hbeef) && wr_in) begin
+		case(addr_in[15:0])
+			16'h0000 : config_reg <= data_in; 			
+			16'h0004 : input_data_reg <= data_in;  
 			default: begin
 			end
 		endcase
@@ -45,12 +46,14 @@ end
 
 // Read Process 
 always_ff @(posedge clk) begin
-	if ((addr_in[15] == 1'b1) && rd_in) begin
-		case(addr_in[3:0])
-			4'h0 : data_out <= config_reg; 			
-			4'h4 : data_out <= input_data_reg;  
-			4'h8 : data_out <= output_data_reg;  
-			4'hC : data_out <= status_reg;  
+	rd_valid_out <= rd_in;
+
+	if ((addr_in[31:16] == 16'hbeef) && rd_in) begin
+		case(addr_in[15:0])
+			16'h0000 : data_out <= config_reg; 			
+			16'h0004 : data_out <= input_data_reg;  
+			16'h0008 : data_out <= output_data_reg;  
+			16'h000C : data_out <= status_reg;  
 			default: data_out <= 32'd0;
 		endcase
 	end
@@ -75,6 +78,7 @@ module top_tb(
     input logic         wr_in,
 
     input logic         rd_in,
+    output logic 	rd_valid_out,
     output logic [31:0] data_out
 );
 
@@ -88,6 +92,7 @@ module top_tb(
 	.wr_in(wr_in),
 
 	.rd_in(rd_in),
+	.rd_valid_out(rd_valid_out),
 	.data_out(data_out)
    );
 

@@ -3,8 +3,10 @@
 //  author: stf
 
 extern void regWrite(uint32_t addr, uint32_t data); 
+extern uint32_t regRead(uint32_t addr); 
 
 uint32_t val;
+uint32_t res;
 
 // runs once on startup
 void setup() {
@@ -13,6 +15,7 @@ void setup() {
 
 // runs continuously
 void loop() {
-        regWrite(0x00010008, val++);
+        regWrite(0xbeef0004, val++);
+	res = regRead(0xbeef0004);
 }
 

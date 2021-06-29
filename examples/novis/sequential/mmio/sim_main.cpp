@@ -36,6 +36,13 @@ typedef struct {
 
 std::queue<mmio_cmd_t> mmio_cmd_q;
 
+// structure of a read response message
+typedef struct {
+	uint32_t data;
+} rd_resp_t; 
+
+std::queue<rd_resp_t> read_resp_q;
+
 // Used to write into the MMIO registers
 void regWrite(uint32_t addr, uint32_t data) {
 	mmio_cmd_t t;
@@ -45,6 +52,23 @@ void regWrite(uint32_t addr, uint32_t data) {
 	t.rd = 0;
 	while(mmio_cmd_q.size() >= 10) {} // Make sure we don't over produce
 	mmio_cmd_q.push(t);	
+}
+
+// Used to read from the MMIO registers
+uint32_t regRead(uint32_t addr) {
+	mmio_cmd_t t;
+	t.addr = addr;
+	t.data = 0;
+	t.wr = 0;
+	t.rd = 1;
+	while(mmio_cmd_q.size() >= 10) {} // Make sure we don't over produce
+	mmio_cmd_q.push(t);	
+
+	// block until a read response is observed
+	while(read_resp_q.empty()) {} 
+	rd_resp_t resp = read_resp_q.front();
+	read_resp_q.pop();
+	return resp.data;
 }
 
 void loop_wrapper() {
@@ -99,6 +123,11 @@ int main(int argc, char** argv, char** env) {
         top->clk = !top->clk;
 
         if (!top->clk) {
+
+            // default case
+            top->wr_in = 0;
+            top->rd_in = 0;
+
             if (main_time > 1 && main_time < 10) {
                 top->rst = 1;  // Assert reset
             } else {
@@ -112,8 +141,15 @@ int main(int argc, char** argv, char** env) {
 			top->addr_in = t.addr;
 			top->data_in = t.data;
 			top->wr_in = t.wr;
+			top->rd_in = t.rd;
 		}
 
+		// pull off any read responses
+		if(top->rd_valid_out) {
+			rd_resp_t r;
+			r.data = top->data_out;
+			read_resp_q.push(r);
+		}
             }
         }
 
