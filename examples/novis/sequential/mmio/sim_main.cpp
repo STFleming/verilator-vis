@@ -15,7 +15,9 @@
 #include <cstdint>
 
 #include <sstream>
+
 #include <queue>
+#include <mutex>
 #include <thread>
 
 #include "sw_driver.h"
@@ -34,6 +36,7 @@ typedef struct {
 	uint8_t  rd;
 } mmio_cmd_t;
 
+std::mutex mmio_cmd_mtx;
 std::queue<mmio_cmd_t> mmio_cmd_q;
 
 // structure of a read response message
@@ -41,7 +44,17 @@ typedef struct {
 	uint32_t data;
 } rd_resp_t; 
 
+std::mutex resp_mtx; // mutex for the read response channel
 std::queue<rd_resp_t> read_resp_q;
+
+// global exit function to leave the simulation
+std::mutex exit_mtx;
+bool exit_flag = false;
+void exit() {
+	exit_mtx.lock();
+	exit_flag = true;
+	exit_mtx.unlock();
+}
 
 // Used to write into the MMIO registers
 void regWrite(uint32_t addr, uint32_t data) {
@@ -50,8 +63,18 @@ void regWrite(uint32_t addr, uint32_t data) {
 	t.data = data;
 	t.wr = 1;
 	t.rd = 0;
-	while(mmio_cmd_q.size() >= 10) {} // Make sure we don't over produce
+
+	// Make sure we don't over produce
+	bool enough_space = false;
+	while(false) {
+		mmio_cmd_mtx.lock();
+		enough_space = !(mmio_cmd_q.size() >= 10);
+		mmio_cmd_mtx.unlock();
+	} 
+
+	mmio_cmd_mtx.lock();
 	mmio_cmd_q.push(t);	
+	mmio_cmd_mtx.unlock();
 }
 
 // Used to read from the MMIO registers
@@ -65,9 +88,17 @@ uint32_t regRead(uint32_t addr) {
 	mmio_cmd_q.push(t);	
 
 	// block until a read response is observed
-	while(read_resp_q.empty()) {} 
+	bool item_avail = false;
+	while(!item_avail) { 
+		resp_mtx.lock();
+		item_avail = !read_resp_q.empty();
+		resp_mtx.unlock();
+	} 
+	resp_mtx.lock();
 	rd_resp_t resp = read_resp_q.front();
 	read_resp_q.pop();
+	resp_mtx.unlock();
+	fprintf(stderr, "Got the data %u\n", resp.data);
 	return resp.data;
 }
 
@@ -114,9 +145,9 @@ int main(int argc, char** argv, char** env) {
 
     std::thread loop_thread(loop_wrapper);
 
-
     // Simulate until $finish
-    while (!Verilated::gotFinish()) {
+    bool running = true;
+    while (running) {
         main_time++;  // Time passes...
 
         // Toggle a fast (time/2 period) clock
@@ -134,7 +165,9 @@ int main(int argc, char** argv, char** env) {
                 top->rst = 0;  // Deassert reset
 
 		// We are no longer in reset, pull in mmio commands
+		mmio_cmd_mtx.lock();
 		if(!mmio_cmd_q.empty()) {
+			fprintf(stderr, "Sending request\n");
 			mmio_cmd_t t = mmio_cmd_q.front();
 			mmio_cmd_q.pop();
 
@@ -143,12 +176,16 @@ int main(int argc, char** argv, char** env) {
 			top->wr_in = t.wr;
 			top->rd_in = t.rd;
 		}
+		mmio_cmd_mtx.unlock();
 
 		// pull off any read responses
 		if(top->rd_valid_out) {
 			rd_resp_t r;
 			r.data = top->data_out;
+
+			resp_mtx.lock();
 			read_resp_q.push(r);
+			resp_mtx.unlock();
 		}
             }
         }
@@ -160,10 +197,14 @@ int main(int argc, char** argv, char** env) {
         // eval_end_step() on each.)
         top->eval();
 
-        if(main_time > 80) { // timeout the simulation
+        if(main_time > 1000) { // timeout the simulation
             fprintf(stderr, "\n\nERROR! The simulation timed out!\n\n\n");
             break;
         }
+	
+	exit_mtx.lock();
+	running = !Verilated::gotFinish() && !exit_flag;
+	exit_mtx.unlock();
 
     }
 

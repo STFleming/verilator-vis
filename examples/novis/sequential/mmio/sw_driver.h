@@ -4,6 +4,7 @@
 
 extern void regWrite(uint32_t addr, uint32_t data); 
 extern uint32_t regRead(uint32_t addr); 
+extern void exit();
 
 uint32_t val;
 uint32_t res;
@@ -15,7 +16,11 @@ void setup() {
 
 // runs continuously
 void loop() {
-        regWrite(0xbeef0004, val++);
-	res = regRead(0xbeef0004);
+	for(int i=0; i<8; i++) {
+        	regWrite(0xbeef0004, val++);
+		res = regRead(0xbeef0004);
+		fprintf(stderr, "res=%u\n", res);
+	}
+	exit();
 }
 
