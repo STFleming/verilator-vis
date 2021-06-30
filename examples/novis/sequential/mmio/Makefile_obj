@@ -16,6 +16,7 @@ SCOMMON=$(LEVEL)/common/sw
 INSTRUCTION_CLASS=$(SCOMMON)/instruction
 VISUALISER_CLASS=$(SCOMMON)/visualiser
 CONTROLLER_CLASS=$(SCOMMON)/controller
+MMIO_ITF=$(SCOMMON)/mmio_itf
 
 PACKAGE_INCLUDES= 
 PLAT := $(shell uname -m)

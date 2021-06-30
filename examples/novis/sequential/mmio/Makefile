@@ -22,8 +22,11 @@ SKIDBUFFER=$(COMMON)/SkidBuffer
 FIFO=$(COMMON)/fifo/rtl/verilog/
 VISUALISER=$(LEVEL)/webserver
 
+MMIO_TOP_HW=$(LEVEL)/common/hw/mmio_itf
+MMIO_TOP_SW=$(LEVEL)/common/sw/mmio_itf
+
 TOPMODULE=top_tb
-FILES = _vis.sv top_tb.sv 
+FILES = $(MMIO_TOP_HW)/top_tb.sv mmio.sv 
 
 ifneq ($(words $(CURDIR)),1)
  $(error Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: '$(CURDIR)')
@@ -96,12 +99,15 @@ default: run
 vis_structs: vis_struct.json
 	$(VISSTRUCT) -i vis_struct.json -v _vis.sv -c _vis.hpp
 
-run: vis_structs 
+run: 
 	@echo
 	@echo "-- Verilator tracing example"
 
 	@echo
 	@echo "-- VERILATE ----------------"
+	cp $(MMIO_TOP_SW)/sim_main.cpp ./ 
+	cp $(MMIO_TOP_SW)/input.vc ./ 
+
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT) 
 
 	@echo
@@ -156,5 +162,6 @@ show-config:
 maintainer-copy::
 clean mostlyclean distclean maintainer-clean::
 	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core *.vcd _vis.sv _vis.hpp 
+	-rm -rf sim_main.cpp input.vc
 	-rm -rf node_modules package-lock.json 
 	

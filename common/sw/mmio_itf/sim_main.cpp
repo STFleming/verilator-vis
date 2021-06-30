@@ -98,13 +98,12 @@ uint32_t regRead(uint32_t addr) {
 	rd_resp_t resp = read_resp_q.front();
 	read_resp_q.pop();
 	resp_mtx.unlock();
-	fprintf(stderr, "Got the data %u\n", resp.data);
 	return resp.data;
 }
 
 void loop_wrapper() {
     setup();
-    while(true) {
+    while(!exit_flag) {
 	    loop();
     }	
 }
@@ -167,7 +166,6 @@ int main(int argc, char** argv, char** env) {
 		// We are no longer in reset, pull in mmio commands
 		mmio_cmd_mtx.lock();
 		if(!mmio_cmd_q.empty()) {
-			fprintf(stderr, "Sending request\n");
 			mmio_cmd_t t = mmio_cmd_q.front();
 			mmio_cmd_q.pop();
 
