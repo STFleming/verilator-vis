@@ -22,6 +22,9 @@
 
 #include "sw_driver.h"
 
+// Create a mutex for the time
+std::mutex time_mtx;
+
 // Current simulation time (64-bit unsigned)
 vluint64_t main_time = 0;
 // Called by $time in Verilog
@@ -195,10 +198,10 @@ int main(int argc, char** argv, char** env) {
         // eval_end_step() on each.)
         top->eval();
 
-        if(main_time > 1000) { // timeout the simulation
-            fprintf(stderr, "\n\nERROR! The simulation timed out!\n\n\n");
-            break;
-        }
+        //if(main_time > 1000) { // timeout the simulation
+        //    fprintf(stderr, "\n\nERROR! The simulation timed out!\n\n\n");
+        //    break;
+        //}
 	
 	exit_mtx.lock();
 	running = !Verilated::gotFinish() && !exit_flag;
