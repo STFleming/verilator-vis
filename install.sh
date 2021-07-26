@@ -28,6 +28,8 @@ else
 	
 	sudo apt-get install -y perl python3 make
 	sudo apt-get install -y g++
+	sudo apt-get install -y rapidjson-dev 
+	sudo apt-get install -y libcpprest-dev 
 	sudo apt-get install -y libfl2 libfl-dev zlibc zlib1g zlib1g-dev 
 	sudo apt-get install -y ccache
 	sudo apt-get install -y libgoogle-perftools-dev numactl perl-doc
@@ -43,13 +45,13 @@ else
 
 	sudo apt-get install gtkwave
 
-	#cd verilator/
-	#autoconf
-	#unset VERILATOR_ROOT
-	#./configure
-	#make -j
-	#make test
-	#make install
+	cd verilator/
+	autoconf
+	unset VERILATOR_ROOT
+	./configure
+	make -j
+	make test
+	make install
 
 fi
 
